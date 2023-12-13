@@ -1,13 +1,22 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import Orders from './Orders';
+import Checkout from './Checkout';
 
 export default function Modal({ isOpen, order, closeModal, onPlus, onMinus }) {
   const dialog = useRef();
+  const [checkOutStarted, setCheckOutStarted] = useState(false);
 
-  const totalSum = order.reduce(
-    (sum, dish) => sum + dish.count * dish.price,
-    0
-  );
+  const totalSum = order
+    .reduce((sum, dish) => sum + dish.count * dish.price, 0)
+    .toFixed(2);
+
+  function handleClickCheckout() {
+    if (order.length === 0) {
+      return;
+    }
+    setCheckOutStarted(true);
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -19,30 +28,19 @@ export default function Modal({ isOpen, order, closeModal, onPlus, onMinus }) {
 
   return createPortal(
     <dialog className="modal" ref={dialog}>
-      <div className="cart">
-        <h2>Your cart</h2>
-        <ul>
-          {order.map(dish => {
-            return (
-              <li className="cart-item" key={dish.id}>
-                <p>
-                  {dish.name} - {dish.count} x ${dish.price}
-                </p>
-                <div className="cart-item-actions">
-                  <button onClick={() => {onMinus(dish.id)}}>-</button>
-                  <span>{dish.count}</span>
-                  <button onClick={() => onPlus(dish.id)}>+</button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-        <div className="cart-total">${totalSum}</div>
-        <div className="modal-actions">
-          <button onClick={closeModal} className="text-button">Close</button>
-          <button className="button">Checkout</button>
-        </div>
-      </div>
+      {!checkOutStarted && (
+        <Orders
+          order={order}
+          closeModal={closeModal}
+          onPlus={onPlus}
+          onMinus={onMinus}
+          clickCheckout={handleClickCheckout}
+          totalSum={totalSum}
+        />
+      )}
+      {checkOutStarted && (
+        <Checkout totalSum={totalSum} closeModal={closeModal} />
+      )}
     </dialog>,
     document.getElementById('modal')
   );
