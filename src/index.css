@@ -117,11 +117,19 @@ h1 {
   font-size: 1.1rem;
   font-family: 'Lato', sans-serif;
   background-color: #ffc404;
-  color: #000;
+  border: 1px solid #ffc404;
+  color: #1f1a09;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 0.2rem;
   cursor: pointer;
+}
+
+.meal-item-actions:hover,
+.meal-item-actions:active {
+  background-color: #ffab04;
+  border-color: #ffab04;
+  color: #1f1a09;
 }
 
 .cart h2 {

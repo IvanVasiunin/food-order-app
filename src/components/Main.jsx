@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export default function Main() {
+export default function Main({addDish}) {
   const [dishes, setDishes] = useState([]);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function Main() {
               <h3>{dish.name}</h3>
               <div className="meal-item-price">${dish.price}</div>
               <div className="meal-item-description">{dish.description}</div>
-              <button className="meal-item-actions">Add to Cart</button>
+                <button onClick={() => addDish(dish)} className="meal-item-actions">Add to Cart</button>
             </article>
           );
         })}
