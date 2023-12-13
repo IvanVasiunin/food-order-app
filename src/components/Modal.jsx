@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
-export default function Modal({ isOpen, order, closeModal }) {
+export default function Modal({ isOpen, order, closeModal, onPlus, onMinus }) {
   const dialog = useRef();
 
   const totalSum = order.reduce(
@@ -29,9 +29,9 @@ export default function Modal({ isOpen, order, closeModal }) {
                   {dish.name} - {dish.count} x ${dish.price}
                 </p>
                 <div className="cart-item-actions">
-                  <button>-</button>
+                  <button onClick={() => {onMinus(dish.id)}}>-</button>
                   <span>{dish.count}</span>
-                  <button>+</button>
+                  <button onClick={() => onPlus(dish.id)}>+</button>
                 </div>
               </li>
             );
